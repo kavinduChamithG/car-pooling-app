@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1009356806276",
+    "firebase_url": "https://carpooling-mobile-app-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "carpooling-mobile-app",
+    "storage_bucket": "carpooling-mobile-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009356806276:android:d849cf743cc5cc1c1f8ad1",
+        "android_client_info": {
+          "package_name": "com.rideping.carpoolingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1009356806276-op8irmg4kd85blj4cnnn6pba6leb6a09.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn9_ESUdexgdsxxZDcx5I19m3J4K-cpqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1009356806276-op8irmg4kd85blj4cnnn6pba6leb6a09.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
