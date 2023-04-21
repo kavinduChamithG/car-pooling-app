@@ -1,5 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carpooling_app/authentication/signup_screen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../global/global.dart';
+import '../splashScreen/splash_screen.dart';
+import '../widgets/progress_dialog.dart';
 
 final globalScaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -13,6 +19,62 @@ class LoginScreen extends StatefulWidget
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  validateForm()
+  {
+
+    if(!emailController.text.contains("@"))
+    {
+      Fluttertoast.showToast(msg: "Email address is not valid.");
+    }
+
+    else if(passwordController.text.isEmpty)
+    {
+      Fluttertoast.showToast(msg: "Password is required");
+    }
+    else
+    {
+      loginDriverNow();
+
+    }
+  }
+
+  loginDriverNow() async
+  {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext c)
+        {
+          return ProgressDialog(message: "Processing, Please Wait..",);
+        }
+    );
+
+    final User? firebaseUser = (
+        await fAuth.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        ).catchError((msg){
+          Navigator.pop(context);
+          Fluttertoast.showToast(msg: "Error: " + msg.toString());
+        })
+    ).user;
+
+    if(firebaseUser != null)
+    {
+      currentFirebaseUser = firebaseUser;
+      Fluttertoast.showToast(msg: "Login Successful");
+      Navigator.push(context, MaterialPageRoute(builder: (c)=> const MySplashScreen()));
+
+    }
+    else
+    {
+      Navigator.pop(context);
+      Fluttertoast.showToast(msg: "Error Occured during Signin");
+
+    }
+  }
+
 
   @override
   // Widget build(BuildContext context) {
@@ -85,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             MaterialStateProperty.all<Color>(Colors.black)),
                         child: const Text('Login'),
                         onPressed: () {
-                          //todo
+                          validateForm();
                         })),
                 // ignore: avoid_unnecessary_containers
                 Container(
