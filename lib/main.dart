@@ -1,6 +1,10 @@
+//import 'dart:js';
+
+import 'package:carpooling_app/infoHandler/app_info.dart';
 import 'package:carpooling_app/splashScreen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async
 {
@@ -9,13 +13,16 @@ void main() async
 
   runApp(
     MyApp(
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+      child: ChangeNotifierProvider(
+        create: (context) => AppInfo(),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const MySplashScreen(),
+          debugShowCheckedModeBanner: false,
         ),
-        home: const MySplashScreen(),
-        debugShowCheckedModeBanner: false,
       )
     ),
   );
