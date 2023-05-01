@@ -64,7 +64,6 @@ flutter:
 
   assets:
     - images/
-    - images/splashimage.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

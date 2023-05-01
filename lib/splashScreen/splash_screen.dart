@@ -19,18 +19,19 @@ class _MySplashScreenState extends State<MySplashScreen>
 {
   startTimer()
   {
-    Timer(const Duration(seconds: 13), () async
+    Timer(const Duration(seconds: 10), () async
     {
-      // if (await fAuth.currentUser != null) {
-      //
-      //   Navigator.push(context, MaterialPageRoute(builder: (c) => MainScreen()));
-      //
-      // }
-      // else {
-      //   Navigator.push(context, MaterialPageRoute(builder: (c) => LoginScreen()));
-      // }
+      if (await fAuth.currentUser != null) {
+
+        currentFirebaseUser = fAuth.currentUser;
+        Navigator.push(context, MaterialPageRoute(builder: (c) => MainScreen()));
+
+      }
+      else {
+        Navigator.push(context, MaterialPageRoute(builder: (c) => LoginScreen()));
+      }
       //send user to home screen
-      Navigator.push(context, MaterialPageRoute(builder: (c)=> LoginScreen()));
+      //Navigator.push(context, MaterialPageRoute(builder: (c)=> LoginScreen()));
     }); //Timer
   }
 
@@ -50,7 +51,7 @@ class _MySplashScreenState extends State<MySplashScreen>
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset("images/splashimage.jpg"),
+                Image.asset("images/splashimage.png"),
 
                 const SizedBox(height: 0,),
               ],

@@ -266,7 +266,6 @@ class _SignUpScreenState extends State<SignUpScreen>
                       //Navigator.push(context, MaterialPageRoute(builder: (c)=> CarInfoScreen()));
                     },
 
-
       // backgroundColor: Colors.black,
       //   body: SingleChildScrollView(
       //     child: Padding(
@@ -416,6 +415,44 @@ class _SignUpScreenState extends State<SignUpScreen>
 
                   ),
                 ),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // google button
+                  GestureDetector(
+                    //onTap: () => AuthService().signInWithGoogle(),
+                    child: Container(
+                      width: 60.0,
+                      height: 60.0,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: AssetImage('images/google.png'),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(width: 25),
+
+                  // apple button
+                  Container(
+                    width: 50.0,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: AssetImage('images/facebook.png'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
 
             Container(
                 child: Row(
