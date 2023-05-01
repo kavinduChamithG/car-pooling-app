@@ -107,8 +107,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
         key: globalScaffoldKey,
         appBar: AppBar(
-          title: const Text('GrouPool'),
+          title: const Text('Loging'),
+          backgroundColor: Colors.orange, 
         ),
+         backgroundColor: Color.fromARGB(255, 0, 0, 0), 
         body: Padding(
             padding: const EdgeInsets.all(10),
             child: ListView(
@@ -119,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: const Text(
                       'Log-In',
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Color.fromARGB(255, 255, 255, 255),
                           fontWeight: FontWeight.w600,
                           fontSize: 30),
                     )),
@@ -131,9 +133,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: TextField(
                     key: ValueKey("userName"),
                     controller: emailController,
+                    
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'User Name',
+                      labelStyle: TextStyle(color: Colors.white), // set the label text color to white
+                      focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white)),
+                      filled: true, // Set filled to true
+                      fillColor: Color.fromARGB(255, 215, 177, 3),
                     ),
                   ),
                 ),
@@ -146,6 +154,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
+                      labelStyle: TextStyle(color: Colors.white), // set the label text color to white
+                      focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white)),
+                      filled: true, // Set filled to true
+                  fillColor: Color.fromARGB(255, 215, 177, 3),
                     ),
                   ),
                 ),
@@ -153,18 +166,41 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     //forgot password screen
                   },
-                  style: TextButton.styleFrom(foregroundColor: Colors.black87),
+                  style: TextButton.styleFrom(foregroundColor: Color.fromARGB(221, 244, 242, 242)),
                   child: const Text('Forgot Password?'),
                 ),
-                Container(
+
+                
+                  // Set the width of the button
+                  Container(
+                    width: double.infinity,
                     height: 50,
+                    decoration: BoxDecoration(
+                    color: Colors.orange,
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      blurRadius: 5,
+                      offset: Offset(0, 2),
+                     ),
+                    ],
+                    ),
+                  
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
                         key: ValueKey("login"),
                         style: ButtonStyle(
-                            backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.black)),
-                        child: const Text('Login'),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                               RoundedRectangleBorder(
+                             borderRadius: BorderRadius.circular(25),
+                                ),
+                              ),
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                              elevation: MaterialStateProperty.all<double>(0),
+                            //backgroundColor:MaterialStateProperty.all<Color>(Color.fromARGB(255, 250, 192, 3)),
+                            //foregroundColor: MaterialStateProperty.all<Color>(Colors.black)), 
+                        ),
+                        child: const Text('Login',style: TextStyle(color: Colors.black)),
                         onPressed: () {
                           validateForm();
                         })),
@@ -172,10 +208,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                     child: Row(
                       children: <Widget>[
-                        const Text("Does not have account?"),
+                        const Text("Does not have account?",
+                        style: TextStyle(color: Colors.yellow),),
                         TextButton(
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                            foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 243, 180, 33)),
                           ),
                           child: const Text(
                             'Create Account',
