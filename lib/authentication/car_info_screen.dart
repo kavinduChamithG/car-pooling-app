@@ -47,8 +47,10 @@ class _CarInfoScreenState extends State<CarInfoScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('RidePing'),
+        title: const Text('Driver Info'),
+        backgroundColor: Color.fromARGB(255, 219, 136, 12),
       ),
+      backgroundColor: Color.fromARGB(255, 21, 18, 22),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: ListView(
@@ -59,7 +61,7 @@ class _CarInfoScreenState extends State<CarInfoScreen>
                 child: const Text(
                   'Enter Your Vehicle Information',
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Color.fromARGB(255, 255, 255, 255),
                       fontWeight: FontWeight.w600,
                       fontSize: 30),
                 )),
@@ -75,6 +77,11 @@ class _CarInfoScreenState extends State<CarInfoScreen>
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Car Model',
+                   labelStyle: TextStyle(color: Colors.white), // set the label text color to white
+                  focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12),)),
+                  filled: true, // Set filled to true
+                  fillColor: Color.fromARGB(184, 74, 73, 71),
                 ),
               ),
             ),
@@ -87,6 +94,11 @@ class _CarInfoScreenState extends State<CarInfoScreen>
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Car Number',
+                   labelStyle: TextStyle(color: Colors.white), // set the label text color to white
+                  focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12),)),
+                  filled: true, // Set filled to true
+                  fillColor: Color.fromARGB(184, 74, 73, 71),
                 ),
               ),
             ),
@@ -98,6 +110,11 @@ class _CarInfoScreenState extends State<CarInfoScreen>
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Car Color',
+                   labelStyle: TextStyle(color: Colors.white), // set the label text color to white
+                  focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12),)),
+                  filled: true, // Set filled to true
+                  fillColor: Color.fromARGB(184, 74, 73, 71),
                 ),
               ),
             ),
@@ -116,10 +133,10 @@ class _CarInfoScreenState extends State<CarInfoScreen>
                 //icon: Icon(Icons.arrow_downward_rounded),
                 dropdownColor: Colors.black54,
                 hint: const Text(
-                  "Please Choose car Type",
+                  "Car Type",
                   style: TextStyle(
                     fontSize: 14.0,
-                    color: Colors.black,
+                    color: Color.fromARGB(255, 255, 255, 255),
                   ),
                 ),
                 value: selectedCarType,
@@ -128,7 +145,7 @@ class _CarInfoScreenState extends State<CarInfoScreen>
                     selectedCarType = newValue.toString();
                   });
                 },
-                icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                icon: Icon(Icons.arrow_drop_down, color: Color.fromARGB(255, 255, 255, 255)),
                 items: carTypesList.map((car) {
                   return DropdownMenuItem(
                     child: Text(
@@ -182,22 +199,33 @@ class _CarInfoScreenState extends State<CarInfoScreen>
             //   ),
             // ),
 
-
+SizedBox(height:20),
             Container(
-              height: 70,
+              height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 219, 136, 12),
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  blurRadius: 5,
+                  offset: Offset(0, 2),
+                     ),
+                    ],
+                    ),
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
               child: ElevatedButton(
                 key: ValueKey("submit"),
                 style: ButtonStyle(
                     backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.black)),
+                    MaterialStateProperty.all<Color>(Color.fromARGB(255, 219, 136, 12))),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Create Account', textAlign: TextAlign.center),
                     SizedBox(width: 10), // Adding some space between the text and icon
                     IconTheme(
-                      data: IconThemeData(size: 15.0, color: Colors.white), // set the size of the icon
+                      data: IconThemeData(size: 15.0, color: Color.fromARGB(255, 2, 2, 2)), // set the size of the icon
                       child: Icon(Icons.create_rounded),
                     ),
                   ],

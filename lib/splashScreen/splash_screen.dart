@@ -5,6 +5,7 @@ import 'package:carpooling_app/authentication/signup_screen.dart';
 import 'package:carpooling_app/mainScreen/main_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../authentication/car_info_screen.dart';
 import '../global/global.dart';
 
 class MySplashScreen extends StatefulWidget
@@ -19,7 +20,7 @@ class _MySplashScreenState extends State<MySplashScreen>
 {
   startTimer()
   {
-    Timer(const Duration(seconds: 10), () async
+    Timer(const Duration(seconds: 5), () async
     {
       if (await fAuth.currentUser != null) {
 
@@ -31,7 +32,7 @@ class _MySplashScreenState extends State<MySplashScreen>
         Navigator.push(context, MaterialPageRoute(builder: (c) => LoginScreen()));
       }
       //send user to home screen
-      //Navigator.push(context, MaterialPageRoute(builder: (c)=> LoginScreen()));
+      //Navigator.push(context, MaterialPageRoute(builder: (c)=> CarInfoScreen()));
     }); //Timer
   }
 
@@ -51,7 +52,7 @@ class _MySplashScreenState extends State<MySplashScreen>
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset("images/splashimage.png"),
+                Image.asset("images/flash11.jpg"),
 
                 const SizedBox(height: 0,),
               ],
