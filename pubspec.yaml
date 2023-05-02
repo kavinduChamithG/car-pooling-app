@@ -46,8 +46,6 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   flutter_geofire: ^2.0.3
   firebase_messaging: ^14.4.1
-  flutter_native_splash: ^1.2.0
-
 
 dev_dependencies:
   flutter_test:
@@ -80,7 +78,7 @@ flutter:
     - images/apple.png
     - images/google.png
     - images/facebook.png
-    - images/flash11.jpg
+    - images/flash.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
