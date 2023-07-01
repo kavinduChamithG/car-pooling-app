@@ -1,5 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:carpooling_app/assistants/assistant_methods.dart';
 import 'package:carpooling_app/global/global.dart';
+import 'package:carpooling_app/mainScreen/new_trip_screen.dart';
 import 'package:carpooling_app/models/user_ride_request_information.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -233,10 +235,12 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox>
             .child("newRideStatus")
             .set("accepted");
 
+        AssistantMethods.pauseLiveLocationUpdates();
+
         //trip started now - send driver to new tripScreen
-        // Navigator.push(context, MaterialPageRoute(builder: (c)=> NewTripScreen(
-        //   userRideRequestDetails: widget.userRideRequestDetails,
-        // )));
+         Navigator.push(context, MaterialPageRoute(builder: (c)=> NewTripScreen(
+           userRideRequestDetails: widget.userRideRequestDetails,
+         )));
       }
       else
       {
