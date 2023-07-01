@@ -80,6 +80,10 @@ flutter:
     - images/google.png
     - images/facebook.png
     - images/flash.jpg
+    - music/music_notification.mp3
+    - images/car.png
+
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
