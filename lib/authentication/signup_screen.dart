@@ -139,8 +139,10 @@ class _SignUpScreenState extends State<SignUpScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('RidePing'),
+        title: const Text('Sign-Up'),
+        backgroundColor: Color.fromARGB(255, 219, 136, 12), 
       ),
+      backgroundColor: Color.fromARGB(255, 21, 18, 22),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: ListView(
@@ -151,7 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                 child: const Text(
                   'Sign-Up',
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Color.fromARGB(255, 255, 255, 255),
                       fontWeight: FontWeight.w600,
                       fontSize: 30),
                 )),
@@ -163,11 +165,17 @@ class _SignUpScreenState extends State<SignUpScreen>
               child: TextField(
                 key: ValueKey("emailID"),
                 controller: emailTextEditingController,
+                style: TextStyle(color: Colors.white), 
                 keyboardType: TextInputType.emailAddress,
                 // validator: EmailFieldValidator.validate,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email ID',
+                  labelStyle: TextStyle(color: Colors.white), // set the label text color to white
+                  focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12),)),
+                  filled: true, // Set filled to true
+                  fillColor: Color.fromARGB(184, 74, 73, 71),
                 ),
               ),
             ),
@@ -177,9 +185,15 @@ class _SignUpScreenState extends State<SignUpScreen>
               child: TextField(
                 key: ValueKey("userName"),
                 controller: nameTextEditingController,
+                style: TextStyle(color: Colors.white), 
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'User Name',
+                  labelStyle: TextStyle(color: Colors.white), // set the label text color to white
+                  focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12),)),
+                  filled: true, // Set filled to true
+                  fillColor: Color.fromARGB(184, 74, 73, 71),
                 ),
               ),
             ),
@@ -191,9 +205,15 @@ class _SignUpScreenState extends State<SignUpScreen>
               key: ValueKey("password"),
               obscureText: _obscureTextpassword,
               controller: passwordTextEditingController,
+              style: TextStyle(color: Colors.white), 
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Password',
+                labelStyle: TextStyle(color: Colors.white), // set the label text color to white
+                focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12),)),
+                filled: true, // Set filled to true
+                fillColor: Color.fromARGB(184, 74, 73, 71),
                 suffixIcon: GestureDetector(
                   onTap: () {
                     setState(() {
@@ -202,6 +222,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                   },
                   child: Icon(
                     _obscureTextpassword ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.white70,
                   ),
                 ),
               ),
@@ -215,9 +236,15 @@ class _SignUpScreenState extends State<SignUpScreen>
               key: ValueKey("confirmPassword"),
               obscureText: _obscureTextconfirmpassword,
               controller: confirmPasswordTextEditingController,
+              style: TextStyle(color: Colors.white), 
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Confirm Password',
+                labelStyle: TextStyle(color: Colors.white), // set the label text color to white
+                focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12),)),
+                filled: true, // Set filled to true
+                fillColor: Color.fromARGB(184, 74, 73, 71),
                 suffixIcon: GestureDetector(
                   onTap: () {
                     setState(() {
@@ -226,6 +253,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                   },
                   child: Icon(
                     _obscureTextconfirmpassword ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.white70,
                   ),
                 ),
               ),
@@ -236,26 +264,56 @@ class _SignUpScreenState extends State<SignUpScreen>
               child: TextField(
                 key: ValueKey("number"),
                 controller: phoneTextEditingController,
+                style: TextStyle(color: Colors.white), 
                 keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Phone Number',
+                  labelStyle: TextStyle(color: Colors.white), // set the label text color to white
+                  focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12),)),
+                  filled: true, // Set filled to true
+                  fillColor: Color.fromARGB(184, 74, 73, 71),
                 ),
               ),
             ),
-
+SizedBox(height:10),
                 Container(
-                  height: 70,
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 219, 136, 12),
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  blurRadius: 5,
+                  offset: Offset(0, 2),
+                     ),
+                    ],
+                    ),
+                  padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
                   child: ElevatedButton(
                     key: ValueKey("submit"),
+                    //style: ButtonStyle(
+                    //backgroundColor:MaterialStateProperty.all<Color>(Color.fromRGBO(255, 152, 0, 1))),
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.black)),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                               RoundedRectangleBorder(
+                             borderRadius: BorderRadius.circular(25),
+                                ),
+                              ),
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                              elevation: MaterialStateProperty.all<double>(0),
+                              
+                              
+                            //backgroundColor:MaterialStateProperty.all<Color>(Color.fromARGB(255, 250, 192, 3)),
+                            //foregroundColor: MaterialStateProperty.all<Color>(Colors.black)), 
+                        ),
+                    
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Next', textAlign: TextAlign.center),
+                        Text('Next', textAlign: TextAlign.center, style: TextStyle(fontSize: 18),),
                         SizedBox(width: 5), // Adding some space between the text and icon
                         Icon(Icons.navigate_next_rounded),
                       ],
@@ -415,6 +473,8 @@ class _SignUpScreenState extends State<SignUpScreen>
 
                   ),
                 ),
+
+            SizedBox(height:10),
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -458,10 +518,11 @@ class _SignUpScreenState extends State<SignUpScreen>
                 child: Row(
                   children: <Widget>[
 
-                    const Text("Already have account?"),
+                    const Text("Already have account?",
+                     style: TextStyle(color: Colors.white),),
                     TextButton(
                       style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                        foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 243, 180, 33)),
                       ),
                       child: const Text(
                         'Sign in',

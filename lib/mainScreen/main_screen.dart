@@ -48,6 +48,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                 BottomNavigationBarItem(
                    icon: Icon(Icons.home),
                    label: "Home",
+                   
                 ),
 
                 BottomNavigationBarItem(
@@ -65,9 +66,9 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                   label: "Account",
                 ),
             ],
-            unselectedItemColor: Colors.white54,
-            selectedItemColor: Colors.white,
-            backgroundColor: Colors.black,
+            unselectedItemColor: Color.fromARGB(255, 246, 246, 246),
+            selectedItemColor: Color.fromARGB(255, 243, 180, 33),
+            backgroundColor: Color.fromARGB(254, 0, 0, 0),
             type: BottomNavigationBarType.fixed,
             selectedLabelStyle: const TextStyle(fontSize: 14),
             showUnselectedLabels: true,

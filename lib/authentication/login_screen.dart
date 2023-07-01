@@ -107,8 +107,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
         key: globalScaffoldKey,
         appBar: AppBar(
-          title: const Text('Loging'),
-          backgroundColor: Colors.orange, 
+          title: const Text('Log-In'),
+          backgroundColor: Color.fromARGB(255, 219, 136, 12), 
         ),
          backgroundColor: Color.fromARGB(255, 21, 18, 22), 
         body: Padding(
@@ -133,16 +133,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: TextField(
                     key: ValueKey("userName"),
                     controller: emailController,
-                    
+                    style: TextStyle(color: Colors.white), 
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'User Name',
                       labelStyle: TextStyle(color: Colors.white), // set the label text color to white
                       focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white)),
+                      borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12), )),
                       filled: true, // Set filled to true
-                      fillColor: Color.fromARGB(255, 215, 177, 3),
+                      fillColor: Color.fromARGB(184, 74, 73, 71),
                     ),
+                    
                   ),
                 ),
                 Container(
@@ -151,14 +152,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     key: ValueKey("password"),
                     obscureText: true,
                     controller: passwordController,
+                    style: TextStyle(color: Colors.white), 
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                       labelStyle: TextStyle(color: Colors.white), // set the label text color to white
                       focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white)),
+                      borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12), )),
                       filled: true, // Set filled to true
-                  fillColor: Color.fromARGB(255, 215, 177, 3),
+                  fillColor: Color.fromARGB(184, 74, 73, 71),
                     ),
                   ),
                 ),
@@ -176,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: double.infinity,
                     height: 50,
                     decoration: BoxDecoration(
-                    color: Colors.orange,
+                    color: Color.fromARGB(255, 219, 136, 12), 
                     borderRadius: BorderRadius.circular(25),
                     boxShadow: [BoxShadow(
                       color: Colors.black.withOpacity(0.5),
@@ -200,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             //backgroundColor:MaterialStateProperty.all<Color>(Color.fromARGB(255, 250, 192, 3)),
                             //foregroundColor: MaterialStateProperty.all<Color>(Colors.black)), 
                         ),
-                        child: const Text('Login',style: TextStyle(color: Colors.black)),
+                        child: const Text('Login',style:( TextStyle(color: Color.fromARGB(255, 255, 255, 255),fontSize: 18))),
                         onPressed: () {
                           validateForm();
                         })),
@@ -209,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Row(
                       children: <Widget>[
                         const Text("Does not have account?",
-                        style: TextStyle(color: Colors.yellow),),
+                        style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),),
                         TextButton(
                           style: ButtonStyle(
                             foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 243, 180, 33)),
