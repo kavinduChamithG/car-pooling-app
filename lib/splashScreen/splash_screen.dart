@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:carpooling_app/authentication/login_screen.dart';
 import 'package:carpooling_app/authentication/signup_screen.dart';
 import 'package:carpooling_app/mainScreen/main_screen.dart';
+import 'package:carpooling_app/tabPages/Show_shedule_rides.dart';
 import 'package:flutter/material.dart';
 
 import '../authentication/car_info_screen.dart';
@@ -25,7 +26,8 @@ class _MySplashScreenState extends State<MySplashScreen>
       if (await fAuth.currentUser != null) {
 
         currentFirebaseUser = fAuth.currentUser;
-        Navigator.push(context, MaterialPageRoute(builder: (c) => MainScreen()));
+        //Navigator.push(context, MaterialPageRoute(builder: (c) => MainScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (c) => ScheduleTilesPage()));
 
       }
       else {
