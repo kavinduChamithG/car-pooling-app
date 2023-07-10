@@ -1,3 +1,4 @@
+import 'package:carpooling_app/mainScreen/scheduled_ride_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../authentication/car_info_screen.dart';
 import '../global/global.dart';
 import '../widgets/progress_dialog.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 
 class RideTabPage extends StatefulWidget {
   const RideTabPage({Key? key}) : super(key: key);
@@ -16,13 +18,18 @@ class RideTabPage extends StatefulWidget {
 
 class _RideTabPageState extends State<RideTabPage> {
 
-  double searchLocationContainerHeight = 500;
+  double searchLocationContainerHeight = 550;
 
   TextEditingController startPositionTextEditingController = TextEditingController();
   TextEditingController endPositionTextEditingController = TextEditingController();
   TextEditingController dateTextEditingController = TextEditingController();
   TextEditingController timeTextEditingController = TextEditingController();
   TextEditingController seatTextEditingController = TextEditingController();
+
+  DateTime? pickedDate;
+  TimeOfDay? pickedTime;
+  DatabaseReference? referenceScheduleRideRequest;
+
 
   // DatabaseReference? referenceScheduledRide;
 
@@ -34,6 +41,72 @@ class _RideTabPageState extends State<RideTabPage> {
   //
   //
   // }
+
+  void _pickerDateDialog() async
+  {
+    pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(
+        const Duration(days: 0),
+      ),
+      lastDate: DateTime(2100),
+    );
+
+    if(pickedDate != null)
+    {
+      setState(() {
+        dateTextEditingController.text = '${pickedDate!.year} - ${pickedDate!.month} - ${pickedDate!.day}';
+      });
+    }
+  }
+
+  void _pickerTimeDialog() async
+  {
+    pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+        builder: (context, childWidget) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              // Using 24-Hour format
+                alwaysUse24HourFormat: false),
+            // If you want 12-Hour format, just change alwaysUse24HourFormat to false or remove all the builder argument
+            child: childWidget!);
+        }
+    );
+
+    if(pickedTime != null)
+    {
+      setState(() {
+        //final String myTime = '${pickedTime!.hour}:${pickedTime!.minute} ${pickedTime!.period}';
+        timeTextEditingController.text = pickedTime!.format(context);   //
+      });
+    }
+  }
+
+
+  saveScheduleRideInfo() async
+  {
+    referenceScheduleRideRequest = FirebaseDatabase.instance.ref().child("Scheduled Rides").push();
+
+    Map scheduledRideDetailMap =
+    {
+      "id": currentFirebaseUser!.uid,
+      "start location": startPositionTextEditingController.text.trim(),
+      "end location": endPositionTextEditingController.text.trim(),
+      "date": dateTextEditingController.text.trim(),
+      "time": timeTextEditingController.text.trim(),
+      "seats available" : seatTextEditingController.text.trim(),
+    };
+
+    //DatabaseReference driversRef = FirebaseDatabase.instance.ref().child("drivers");
+    referenceScheduleRideRequest!.set(scheduledRideDetailMap);
+
+    Fluttertoast.showToast(msg: "Scheduled Ride has been Posted");
+    Navigator.push(context, MaterialPageRoute(builder: (c)=> ScheduledRides()));
+
+  }
 
 
   @override
@@ -61,18 +134,39 @@ class _RideTabPageState extends State<RideTabPage> {
                 child: Column(
                   children: [
 
-                    const SizedBox(height: 10.0),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      child: (
+                        const Text(
+                          "Schedule a Future Ride",
+                          style:TextStyle(
+                              fontSize: 26,
+                              color: Color.fromARGB(255, 219, 136, 12),
+                              fontWeight: FontWeight.bold,
+                          )
+                        )
+                      )
+                    ),
+
+                      const SizedBox(height: 10.0),
 
                     Container(
                       padding: const EdgeInsets.all(10),
                       child: TextField(
                         key: ValueKey("startLocation"),
                         controller: startPositionTextEditingController,
+                        style: TextStyle(color: Colors.white),
                         keyboardType: TextInputType.emailAddress,
                         // validator: EmailFieldValidator.validate,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Start Location',
+                          labelStyle: TextStyle(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12),)),
+                          filled: true, // Set filled to true
+                          fillColor: Color.fromARGB(184, 74, 73, 71),
+
                         ),
                       ),
                     ),
@@ -82,9 +176,15 @@ class _RideTabPageState extends State<RideTabPage> {
                       child: TextField(
                         key: ValueKey("endLocation"),
                         controller: endPositionTextEditingController,
+                        style: TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'End Location',
+                          labelStyle: TextStyle(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12),)),
+                          filled: true, // Set filled to true
+                          fillColor: Color.fromARGB(184, 74, 73, 71),
                         ),
                       ),
                     ),
@@ -95,10 +195,20 @@ class _RideTabPageState extends State<RideTabPage> {
                       child: TextField(
                         key: ValueKey("date"),
                         controller: dateTextEditingController,
+                        style: TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Date',
+                          labelStyle: TextStyle(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12),)),
+                          filled: true, // Set filled to true
+                          fillColor: Color.fromARGB(184, 74, 73, 71),
                         ),
+                        readOnly: true,
+                        onTap: (){
+                          _pickerDateDialog();
+                          },
                       ),
                     ),
 
@@ -108,10 +218,20 @@ class _RideTabPageState extends State<RideTabPage> {
                       child: TextField(
                         key: ValueKey("time"),
                         controller: timeTextEditingController,
+                        style: TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Departure Time',
+                          labelStyle: TextStyle(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12),)),
+                          filled: true, // Set filled to true
+                          fillColor: Color.fromARGB(184, 74, 73, 71),
                         ),
+                        readOnly: true,
+                        onTap: (){
+                          _pickerTimeDialog();
+                        },
                       ),
                     ),
 
@@ -120,9 +240,15 @@ class _RideTabPageState extends State<RideTabPage> {
                       child: TextField(
                         key: ValueKey("seats"),
                         controller: seatTextEditingController,
+                        style: TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Seats',
+                          labelStyle: TextStyle(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color.fromARGB(255, 219, 136, 12),)),
+                          filled: true, // Set filled to true
+                          fillColor: Color.fromARGB(184, 74, 73, 71),
                         ),
                       ),
                     ),
@@ -250,13 +376,15 @@ class _RideTabPageState extends State<RideTabPage> {
 
                     ElevatedButton(
                       child: const Text(
-                        "Request a Ride",
+                        "Post Ride",
                       ),
                       onPressed: ()
                       {
+                        saveScheduleRideInfo();
 
                       },
                       style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 219, 136, 12),
                           foregroundColor: Colors.white,
                           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
                       ),
