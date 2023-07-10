@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:carpooling_app/mainScreen/Search_destinations_screen.dart';
 import 'package:carpooling_app/push_notifications/push_notification_system.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +8,15 @@ import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../assistants/assistant_methods.dart';
 import '../assistants/black_theme_google_map.dart';
 import '../global/global.dart';
+import '../global/global.dart';
+import '../global/global.dart';
+import '../infoHandler/app_info.dart';
+import '../main.dart';
 import '../splashScreen/splash_screen.dart';
 
 class HomeTabPage extends StatefulWidget {
@@ -35,9 +41,13 @@ class _HomeTabPageState extends State<HomeTabPage>
   var geoLocator = Geolocator();
   LocationPermission? _locationPermission;
 
-  String statusText = "Now Offline";  //By default driver is setting to offline
+  String statusText = "Go Online";  //By default driver is setting to offline
   Color buttonColor = Colors.grey;
   bool isDriverActive = false;
+
+  bool openNavigationDrawer = true;
+
+  TextEditingController destinationTextEditingController = TextEditingController();
 
 
   checkIfLocationPermissionAllowed() async
@@ -137,6 +147,8 @@ class _HomeTabPageState extends State<HomeTabPage>
         )
             : Container(),
 
+
+
         //button for online offline driver
         Positioned(
           top: statusText != "Now Online"
@@ -144,7 +156,77 @@ class _HomeTabPageState extends State<HomeTabPage>
               : 25,
           left: 0,
           right: 0,
-          child: Row(
+          child : Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 85, vertical: 18),
+           child: Column(
+             children: [
+               // const Text(
+               //   "Where are you going?",
+               //   style: TextStyle(
+               //     fontSize: 16,
+               //     fontWeight: FontWeight.bold,
+               //     color: Colors.lightGreenAccent,
+               //   ),
+               // ),
+
+               const SizedBox(height: 18,),
+
+               GestureDetector(
+                 onTap: () async
+                 {
+                   //go to search places screen
+                   var responseFromSearchScreen = await Navigator.push(context, MaterialPageRoute(builder: (c)=> SearchDestinationsScreen()));
+
+                   if(responseFromSearchScreen == "obtainedDropoff")
+                   {
+                     setState(() {
+                       openNavigationDrawer = false;
+                     });
+
+                     //draw routes - draw polyline
+                     //await drawPolyLineFromOriginToDestination();
+                   }
+                 },
+                 child: Row(
+                   children: [
+                     const Icon(Icons.add_location_alt_outlined, color: Colors.grey,),
+                     const SizedBox(width: 12.0,),
+                     Column(
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: [
+                         // const Text(
+                         //   "To",
+                         //   style: TextStyle(color: Color.fromARGB(255, 219, 136, 12), fontSize: 12),
+                         // ),
+                         Text(
+                           Provider.of<AppInfo>(context).userDropOffLocation != null
+                               ? Provider.of<AppInfo>(context).userDropOffLocation!.locationName!
+                               : "Where are you going?",
+                           style: const TextStyle(color: Color.fromARGB(255, 219, 136, 12), fontSize: 18),
+                         ),
+                       ],
+                     ),
+                   ],
+                 ),
+               ),
+
+
+
+
+               // TextField(
+               //   key: ValueKey("Destination controller"),
+               //   controller: destinationTextEditingController,
+               //   decoration: const InputDecoration(
+               //     border: OutlineInputBorder(),
+               //     filled: true,
+               //     fillColor: Colors.white,
+               //   ),
+               //   style: TextStyle(color: Colors.white, fontSize: 18),
+               // ),
+
+               const SizedBox(height: 18,),
+
+           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
@@ -169,7 +251,7 @@ class _HomeTabPageState extends State<HomeTabPage>
                     driverIsOfflineNow();
 
                     setState(() {
-                      statusText = "Now Offline";
+                      statusText = "Go Online";
                       isDriverActive = false;
                       buttonColor = Colors.grey;
                     });
@@ -202,6 +284,9 @@ class _HomeTabPageState extends State<HomeTabPage>
               ),
             ],
           ),
+          ],
+          ),
+        ),
         ),
       ],
     );
@@ -223,12 +308,35 @@ class _HomeTabPageState extends State<HomeTabPage>
         driverCurrentPosition!.longitude
     );
 
+    var driverDestinationLocation = Provider.of<AppInfo>(context, listen: false).DriverDestinationLocation;
+
+    Map<String, dynamic> driverDestinationLocationMap =
+    {
+      //"key": value,
+      "latitude": driverDestinationLocation!.locationLatitude.toString(),
+      "longitude": driverDestinationLocation!.locationLongitude.toString(),
+    };
+
+    Map driverDirectionInformationMap =
+    {
+      "destination": driverDestinationLocationMap,
+      "destinationAddress": driverDestinationLocation.locationName,
+    };
+   // String humanReadableAddress = await AssistantMethods.searchAddressForGeographicCoOrdinates(desPosition!, context);
+
+    DatabaseReference ref1 = FirebaseDatabase.instance.ref()
+        .child("drivers")
+        .child(currentFirebaseUser!.uid)
+        .child("destination");
+
     DatabaseReference ref = FirebaseDatabase.instance.ref()
         .child("drivers")
         .child(currentFirebaseUser!.uid)
         .child("newRideStatus");
 
     ref.set("idle"); //searching for ride request
+    ref1.set(driverDirectionInformationMap);
+
     ref.onValue.listen((event) { });
   }
 
@@ -267,17 +375,27 @@ class _HomeTabPageState extends State<HomeTabPage>
         .child("drivers")
         .child(currentFirebaseUser!.uid)
         .child("newRideStatus");
+
+    DatabaseReference? ref1 = FirebaseDatabase.instance.ref()
+        .child("drivers")
+        .child(currentFirebaseUser!.uid)
+        .child("destination");
+
     ref.onDisconnect();
     ref.remove();
+
+    ref1.onDisconnect();
+    ref1.remove();
     ref = null;
+    ref1 = null;
 
     Future.delayed(const Duration(milliseconds: 2000), ()
     {
       //SystemChannels.platform.invokeMethod("SystemNavigator.pop");
-      SystemNavigator.pop();
+      //SystemNavigator.pop();
 
       //Instead of minimizing the app after going offline, can use one of the following methods to refresh the app fully. 2nd method of loading splash screen can cause small problems as it does not refresh the app fully.
-      //MyApp.restartApp(context);
+      MyApp.restartApp(context);
       //Navigator.push(context, MaterialPageRoute(builder: (c)=> MySplashScreen()));
     });
   }
