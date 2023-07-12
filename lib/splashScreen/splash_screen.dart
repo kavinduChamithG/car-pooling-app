@@ -4,6 +4,9 @@ import 'package:carpooling_app/authentication/login_screen.dart';
 import 'package:carpooling_app/authentication/signup_screen.dart';
 import 'package:carpooling_app/mainScreen/main_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:carpooling_app/tabPages/ratings_tab.dart';
+import 'package:carpooling_app/tabPages/profile_tab.dart';
+
 
 import '../authentication/car_info_screen.dart';
 import '../global/global.dart';
@@ -25,11 +28,11 @@ class _MySplashScreenState extends State<MySplashScreen>
       if (await fAuth.currentUser != null) {
 
         currentFirebaseUser = fAuth.currentUser;
-        Navigator.push(context, MaterialPageRoute(builder: (c) => MainScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (c) => MainScreen()));  //MainScreen()
 
       }
       else {
-        Navigator.push(context, MaterialPageRoute(builder: (c) => LoginScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (c) => LoginScreen())); //LoginScreen()
       }
       //send user to home screen
       //Navigator.push(context, MaterialPageRoute(builder: (c)=> CarInfoScreen()));

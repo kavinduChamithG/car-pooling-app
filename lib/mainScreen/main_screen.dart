@@ -1,6 +1,7 @@
 import 'package:carpooling_app/tabPages/earning_tab.dart';
 import 'package:carpooling_app/tabPages/home_tab.dart';
 import 'package:carpooling_app/tabPages/profile_tab.dart';
+import 'package:carpooling_app/tabPages/ratings_tab.dart';
 import 'package:carpooling_app/tabPages/ride_tab.dart';
 import 'package:flutter/material.dart';
 
@@ -40,6 +41,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
               HomeTabPage(),
               EarningsTabPage(),
               RideTabPage(),
+              //RatingsTabPage(),
               ProfileTabPage(),
             ],
         ),

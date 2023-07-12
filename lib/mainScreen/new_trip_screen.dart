@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:carpooling_app/widgets/fare_amount_collection_dialog.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -573,6 +574,48 @@ class _NewTripScreenState extends State<NewTripScreen>
     streamSubscriptionDriverLivePosition!.cancel();
 
     Navigator.pop(context);
+    showDialog(
+        context: context,
+        builder: (BuildContext c)=> FareAmountCollectionDialog(
+      totalFareAmount: totalFareAmount,
+    ),
+    );
+
+    saveFareAmountToDriverEarnings(totalFareAmount);
+
+
+  }
+
+  saveFareAmountToDriverEarnings(double totalFareAmount)
+  {
+    FirebaseDatabase.instance.ref()
+        .child("drivers")
+        .child(currentFirebaseUser!.uid)
+        .child("earnings")
+        .once()
+        .then((snap)
+    {
+      if(snap.snapshot.value != null) //earnings sub Child exists
+          {
+        //12
+        double oldEarnings = double.parse(snap.snapshot.value.toString());
+        double driverTotalEarnings = totalFareAmount + oldEarnings;
+
+        FirebaseDatabase.instance.ref()
+            .child("drivers")
+            .child(currentFirebaseUser!.uid)
+            .child("earnings")
+            .set(driverTotalEarnings.toString());
+      }
+      else //earnings sub Child do not exists
+          {
+        FirebaseDatabase.instance.ref()
+            .child("drivers")
+            .child(currentFirebaseUser!.uid)
+            .child("earnings")
+            .set(totalFareAmount.toString());
+      }
+    });
   }
 
 
@@ -593,19 +636,19 @@ class _NewTripScreenState extends State<NewTripScreen>
     databaseReference.child("driverId").set(onlineDriverData.id);
     databaseReference.child("driverName").set(onlineDriverData.name);
     databaseReference.child("driverPhone").set(onlineDriverData.phone);
-    databaseReference.child("car_details").set(onlineDriverData.car_color.toString() + onlineDriverData.car_model.toString());
+    databaseReference.child("car_details").set(onlineDriverData.car_color.toString() +" " + onlineDriverData.car_model.toString()+" " + onlineDriverData.car_number.toString());
 
-    saveRideRequestIdToDriverHistory();
+   // saveRideRequestIdToDriverHistory();
   }
 
-  saveRideRequestIdToDriverHistory()
-  {
-    DatabaseReference tripsHistoryRef = FirebaseDatabase.instance.ref()
-        .child("drivers")
-        .child(currentFirebaseUser!.uid)
-        .child("tripsHistory");
-
-    tripsHistoryRef.child(widget.userRideRequestDetails!.rideRequestId!).set(true);
-  }
+  // saveRideRequestIdToDriverHistory()
+  // {
+  //   DatabaseReference tripsHistoryRef = FirebaseDatabase.instance.ref()
+  //       .child("drivers")
+  //       .child(currentFirebaseUser!.uid)
+  //       .child("tripsHistory");
+  //
+  //   tripsHistoryRef.child(widget.userRideRequestDetails!.rideRequestId!).set(true);
+  // }
 
 }
