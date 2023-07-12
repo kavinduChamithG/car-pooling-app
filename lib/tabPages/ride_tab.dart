@@ -111,8 +111,44 @@ class _RideTabPageState extends State<RideTabPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Container(
+      color: Color.fromARGB(168, 0, 0, 0), // Set the desired background color
+    child: Stack(
+
+
+    
       children: [
+        
+
+                    Row(
+                      children: [
+                        SizedBox(width: 50),
+                        Container(
+                            width:300,
+                            margin: const EdgeInsets.only(top: 20),
+                            child: ElevatedButton(
+                              child: const Text(
+                                "Show Schedule Rides",
+                              ),
+                              onPressed: ()
+                              {
+                                saveScheduleRideInfo();
+
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color.fromARGB(255, 219, 136, 12),
+                                  foregroundColor: Colors.white,
+                                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                    shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10), // Set a large value for border radius to create an oval shape
+                               ),
+                              ),
+                            ),
+
+                          ),
+                      ],
+                    ),
+        
         Positioned(
           bottom: 0,
           left: 0,
@@ -123,7 +159,7 @@ class _RideTabPageState extends State<RideTabPage> {
             child: Container(
               height: searchLocationContainerHeight,
               decoration: const BoxDecoration(
-                color: Colors.black12,
+                color: Color.fromARGB(255, 0, 0, 0),
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(20),
                   topLeft: Radius.circular(20),
@@ -134,14 +170,19 @@ class _RideTabPageState extends State<RideTabPage> {
                 child: Column(
                   children: [
 
+                    
+
                     Container(
                       padding: const EdgeInsets.all(10),
                       child: (
+
+
+                        
                         const Text(
                           "Schedule a Future Ride",
                           style:TextStyle(
                               fontSize: 26,
-                              color: Color.fromARGB(255, 219, 136, 12),
+                              color: Color.fromARGB(255, 255, 255, 255),
                               fontWeight: FontWeight.bold,
                           )
                         )
@@ -170,6 +211,7 @@ class _RideTabPageState extends State<RideTabPage> {
                         ),
                       ),
                     ),
+                
 
                     Container(
                       padding: const EdgeInsets.all(10),
@@ -373,24 +415,59 @@ class _RideTabPageState extends State<RideTabPage> {
                     // ),
                     //
                     // const SizedBox(height: 16.0),
+                  Row(
+                    children: [
+                      SizedBox(width: 10),
+                      Container(
+                        width:150,
+                        child: ElevatedButton(
+                          child: const Text(
+                            "Post Ride",
+                          ),
+                          onPressed: ()
+                          {
+                            saveScheduleRideInfo();
 
-                    ElevatedButton(
-                      child: const Text(
-                        "Post Ride",
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 219, 136, 12),
+                              foregroundColor: Color.fromARGB(255, 0, 0, 0),
+                              textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10), // Set a large value for border radius to create an oval shape
+                           ),
+                          ),
+                        ),
+
                       ),
-                      onPressed: ()
-                      {
-                        saveScheduleRideInfo();
 
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 219, 136, 12),
-                          foregroundColor: Colors.white,
-                          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
-                      ),
-                    ),
+  SizedBox(width: 40), // Add some spacing between the buttons
+    Container(
+      width: 150,
+      child: ElevatedButton(
+        child: const Text(
+          "Reset",
+        ),
+        onPressed: () {
+          // Handle reset button onPressed event
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Color.fromARGB(255, 255, 255, 255),
+          onPrimary: Color.fromARGB(255, 0, 0, 0),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+    ),
+                    ],
 
 
+
+
+                    
+                  ),
 
                   ],
                 ),
@@ -400,6 +477,8 @@ class _RideTabPageState extends State<RideTabPage> {
         ),
 
       ],
+    )
     );
+    
   }
 }
