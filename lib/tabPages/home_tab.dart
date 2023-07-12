@@ -73,6 +73,9 @@ class _HomeTabPageState extends State<HomeTabPage>
 
     String humanReadableAddress = await AssistantMethods.searchAddressForGeographicCoOrdinates(driverCurrentPosition!, context);
     print("this is your address = " + humanReadableAddress);
+
+
+    AssistantMethods.readDriverRatings(context);
   }
 
   readCurrentDriverInformation() async
@@ -107,6 +110,8 @@ class _HomeTabPageState extends State<HomeTabPage>
       PushNotificationSystem pushNotificationSystem = PushNotificationSystem();
       pushNotificationSystem.initializeCloudMessaging(context);
       pushNotificationSystem.generateAndGetToken();
+
+      AssistantMethods.readDriverEarnings(context);
   }
 
   @override

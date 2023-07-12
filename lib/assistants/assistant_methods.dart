@@ -4,6 +4,7 @@ import 'package:carpooling_app/global/map_key.dart';
 import 'package:carpooling_app/infoHandler/app_info.dart';
 import 'package:carpooling_app/models/direction_details_info.dart';
 import 'package:carpooling_app/models/directions.dart';
+import 'package:carpooling_app/models/trips_history_model.dart';
 import 'package:carpooling_app/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -37,23 +38,6 @@ class AssistantMethods
     return humanReadableAddress;
   }
 
-  static void readCurrentOnlineUserInfo() async
-  {
-    currentFirebaseUser = fAuth.currentUser;
-
-    DatabaseReference userRef = FirebaseDatabase.instance
-        .ref()
-        .child("users")
-        .child(currentFirebaseUser!.uid);
-
-    userRef.once().then((snap)
-    {
-      if(snap.snapshot.value != null)
-      {
-        userModelCurrentInfo = UserModel.fromSnapshot(snap.snapshot);
-      }
-    });
-  }
 
   static Future<DirectionDetailsInfo?> obtainOriginToDestinationDirectionDetails(LatLng origionPosition, LatLng destinationPosition) async
   {
@@ -96,11 +80,11 @@ class AssistantMethods
 
   static double calculateFareAmountFromOriginToDestination(DirectionDetailsInfo directionDetailsInfo)
   {
-    double timeTraveledFareAmountPerMinute = (directionDetailsInfo.duration_value! / 60) * 0.1;
-    double distanceTraveledFareAmountPerKilometer = (directionDetailsInfo.duration_value! / 1000) * 0.1;
+    double timeTraveledFareAmountPerMinute = (directionDetailsInfo.duration_value! / 60) * 5;
+    double distanceTraveledFareAmountPerKilometer = (directionDetailsInfo.duration_value!-1.0)/1000 * 10.0;
 
-    //USD
-    double totalFareAmount = timeTraveledFareAmountPerMinute + distanceTraveledFareAmountPerKilometer;
+    //rupee
+    double totalFareAmount = timeTraveledFareAmountPerMinute + distanceTraveledFareAmountPerKilometer + 50.0;
 
     if(driverVehicleType == "bike")
     {
@@ -122,4 +106,100 @@ class AssistantMethods
     }
   }
 
+  //retrieve the trips KEYS for online user
+  //trip key = ride request key
+  static void readTripsKeysForOnlineDriver(context)
+  {
+    FirebaseDatabase.instance.ref()
+        .child("All Ride Requests")
+        .orderByChild("driverId")
+        .equalTo(fAuth.currentUser!.uid)
+        .once()
+        .then((snap)
+    {
+      if(snap.snapshot.value != null)
+      {
+        Map keysTripsId = snap.snapshot.value as Map;
+
+        //count total number trips and share it with Provider
+        int overAllTripsCounter = keysTripsId.length;
+        Provider.of<AppInfo>(context, listen: false).updateOverAllTripsCounter(overAllTripsCounter);
+
+        //share trips keys with Provider
+        List<String> tripsKeysList = [];
+        keysTripsId.forEach((key, value)
+        {
+          tripsKeysList.add(key);
+        });
+        Provider.of<AppInfo>(context, listen: false).updateOverAllTripsKeys(tripsKeysList);
+
+        //get trips keys data - read trips complete information
+        readTripsHistoryInformation(context);
+      }
+    });
+
+  }
+
+  static void readTripsHistoryInformation(context)
+  {
+    var tripsAllKeys = Provider.of<AppInfo>(context, listen: false).historyTripsKeysList;
+
+    for(String eachKey in tripsAllKeys)
+    {
+      FirebaseDatabase.instance.ref()
+          .child("All Ride Requests")
+          .child(eachKey)
+          .once()
+          .then((snap)
+      {
+        var eachTripHistory = TripsHistoryModel.fromSnapshot(snap.snapshot);
+
+        if((snap.snapshot.value as Map)["status"] == "ended")
+        {
+          //update-add each history to OverAllTrips History Data List
+          Provider.of<AppInfo>(context, listen: false).updateOverAllTripsHistoryInformation(eachTripHistory);
+        }
+      });
+    }
+  }
+
+  //readDriverEarnings
+  static void readDriverEarnings(context)
+  {
+    FirebaseDatabase.instance.ref()
+        .child("drivers")
+        .child(fAuth.currentUser!.uid)
+        .child("earnings")
+        .once()
+        .then((snap)
+    {
+      if(snap.snapshot.value != null)
+      {
+        String driverEarnings = snap.snapshot.value.toString();
+        Provider.of<AppInfo>(context, listen: false).updateDriverTotalEarnings(driverEarnings);
+      }
+    });
+
+    readTripsKeysForOnlineDriver(context);
+  }
+
+
+  static void readDriverRatings(context)
+  {
+    FirebaseDatabase.instance.ref()
+        .child("drivers")
+        .child(fAuth.currentUser!.uid)
+        .child("rating")
+        .once()
+        .then((snap)
+    {
+      if(snap.snapshot.value != null)
+      {
+        String driverRatings = snap.snapshot.value.toString();
+        Provider.of<AppInfo>(context, listen: false).updateDriverAverageRatings(driverRatings);
+      }
+    });
+
+    readTripsKeysForOnlineDriver(context);
+  }
 }
