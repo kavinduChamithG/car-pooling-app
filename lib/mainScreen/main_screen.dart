@@ -13,7 +13,7 @@ class MainScreen extends StatefulWidget
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin
+class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin
 {
   TabController? tabController;
   int selectedIndex = 0;
@@ -27,12 +27,15 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   }
 
   @override
+  bool get wantKeepAlive => true;
+
   void initState(){
     super.initState();
 
     tabController = TabController(length: 4, vsync: this);
   }
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         body: TabBarView(
             physics: const NeverScrollableScrollPhysics(),

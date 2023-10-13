@@ -38,7 +38,7 @@ class _RatingsTabPageState extends State<RatingsTabPage>
   getRatingsNumber()
   {
     setState(() {
-      ratingsNumber = double.parse(Provider.of<AppInfo>(context, listen: false).driverAverageRatings);
+      ratingsNumber = double.parse(Provider.of<AppInfoc>(context, listen: false).driverAverageRatings);
     });
 
     setupRatingsTitle();

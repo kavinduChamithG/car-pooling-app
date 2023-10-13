@@ -3,13 +3,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:carpooling_app/models/directions.dart';
 import 'package:carpooling_app/models/trips_history_model.dart';
 
-class AppInfo extends ChangeNotifier
+import '../models/Scheduled_Ride_model.dart';
+
+class AppInfoc extends ChangeNotifier
 {
   Directions? userPickUpLocation, userDropOffLocation,DriverDestinationLocation;
   int countTotalTrips = 0;
+  int countTotalScheduledRides = 0;
   String driverTotalEarnings="0";
   String driverAverageRatings="0";
   List<String> historyTripsKeysList = [];
+  List<String> historyScheduledRideKeysList = [];
+  List<ScheduledRideModel> allScheduledRideInformationList = [];
   List<TripsHistoryModel> allTripsHistoryInformationList = [];
 
 
@@ -58,4 +63,23 @@ class AppInfo extends ChangeNotifier
   {
     driverAverageRatings = driverRatings;
   }
+
+  updateOverAllScheduledRideCounter(int overAllScheduledRideCounter)
+  {
+    countTotalScheduledRides = overAllScheduledRideCounter;
+    notifyListeners();
+  }
+
+  updateOverAllScheduledRideKeys(List<String> scheduledRideKeysList)
+  {
+    historyScheduledRideKeysList = scheduledRideKeysList;
+    notifyListeners();
+  }
+
+  updateOverAllScheduledRideHistoryInformation(ScheduledRideModel eachScheduledRideHistory)
+  {
+    allScheduledRideInformationList.add(eachScheduledRideHistory);
+    notifyListeners();
+  }
+
 }

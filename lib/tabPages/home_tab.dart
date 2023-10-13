@@ -58,6 +58,7 @@ class _HomeTabPageState extends State<HomeTabPage>
     {
       _locationPermission = await Geolocator.requestPermission();
     }
+
   }
 
   locateDriverPosition() async
@@ -76,6 +77,8 @@ class _HomeTabPageState extends State<HomeTabPage>
 
 
     AssistantMethods.readDriverRatings(context);
+
+    //AssistantMethods.readScheduledRideKeys(context);
   }
 
   readCurrentDriverInformation() async
@@ -111,8 +114,11 @@ class _HomeTabPageState extends State<HomeTabPage>
       pushNotificationSystem.initializeCloudMessaging(context);
       pushNotificationSystem.generateAndGetToken();
 
-      AssistantMethods.readDriverEarnings(context);
+
+      AssistantMethods.readScheduledRideKeys(context);
   }
+
+
 
   @override
   void initState()
@@ -121,6 +127,11 @@ class _HomeTabPageState extends State<HomeTabPage>
 
     checkIfLocationPermissionAllowed();
     readCurrentDriverInformation();
+
+
+    AssistantMethods.readDriverEarnings(context);
+
+
   }
 
   @override
@@ -204,8 +215,8 @@ class _HomeTabPageState extends State<HomeTabPage>
                          //   style: TextStyle(color: Color.fromARGB(255, 219, 136, 12), fontSize: 12),
                          // ),
                          Text(
-                           Provider.of<AppInfo>(context).userDropOffLocation != null
-                               ? Provider.of<AppInfo>(context).userDropOffLocation!.locationName!
+                           Provider.of<AppInfoc>(context).userDropOffLocation != null
+                               ? Provider.of<AppInfoc>(context).userDropOffLocation!.locationName!
                                : "Where are you going?",
                            style: const TextStyle(color: Color.fromARGB(255, 219, 136, 12), fontSize: 18),
                          ),
@@ -237,19 +248,26 @@ class _HomeTabPageState extends State<HomeTabPage>
               ElevatedButton(
                 onPressed: ()
                 {
-                  if(isDriverActive != true) //offline
+                  if(isDriverActive != true) { //offline
+                    if (Provider
+                        .of<AppInfoc>(context, listen: false)
+                        .userDropOffLocation != null) {
                       {
-                    driverIsOnlineNow();
-                    updateDriversLocationAtRealTime();
+                        driverIsOnlineNow();
+                        updateDriversLocationAtRealTime();
 
-                    setState(() {
-                      statusText = "Now Online";
-                      isDriverActive = true;
-                      buttonColor = Colors.transparent;
-                    });
+                        setState(() {
+                          statusText = "Now Online";
+                          isDriverActive = true;
+                          buttonColor = Colors.transparent;
+                        });
 
-                    //display Toast
-                    Fluttertoast.showToast(msg: "you are Online Now");
+                        //display Toast
+                        Fluttertoast.showToast(msg: "you are Online Now");
+                      }
+                    } else {
+                      Fluttertoast.showToast(msg: "Please select destination location");
+                    }
                   }
                   else //online
                       {
@@ -313,7 +331,7 @@ class _HomeTabPageState extends State<HomeTabPage>
         driverCurrentPosition!.longitude
     );
 
-    var driverDestinationLocation = Provider.of<AppInfo>(context, listen: false).DriverDestinationLocation;
+    var driverDestinationLocation = Provider.of<AppInfoc>(context, listen: false).DriverDestinationLocation;
 
     Map<String, dynamic> driverDestinationLocationMap =
     {

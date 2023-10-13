@@ -13,6 +13,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../models/Scheduled_Ride_model.dart';
+
 
 class AssistantMethods
 {
@@ -32,7 +34,7 @@ class AssistantMethods
       userPickUpAddress.locationLongitude = position.longitude;
       userPickUpAddress.locationName = humanReadableAddress;
 
-      Provider.of<AppInfo>(context, listen: false).updatePickUpLocationAddress(userPickUpAddress);
+      Provider.of<AppInfoc>(context, listen: false).updatePickUpLocationAddress(userPickUpAddress);
     }
 
     return humanReadableAddress;
@@ -81,10 +83,10 @@ class AssistantMethods
   static double calculateFareAmountFromOriginToDestination(DirectionDetailsInfo directionDetailsInfo)
   {
     double timeTraveledFareAmountPerMinute = (directionDetailsInfo.duration_value! / 60) * 5;
-    double distanceTraveledFareAmountPerKilometer = (directionDetailsInfo.duration_value!-1.0)/1000 * 10.0;
+    double distanceTraveledFareAmountPerKilometer = (directionDetailsInfo.duration_value!)/1000 * 10.0;
 
     //rupee
-    double totalFareAmount = timeTraveledFareAmountPerMinute + distanceTraveledFareAmountPerKilometer + 50.0;
+    double totalFareAmount = timeTraveledFareAmountPerMinute + distanceTraveledFareAmountPerKilometer;
 
     if(driverVehicleType == "bike")
     {
@@ -107,7 +109,6 @@ class AssistantMethods
   }
 
   //retrieve the trips KEYS for online user
-  //trip key = ride request key
   static void readTripsKeysForOnlineDriver(context)
   {
     FirebaseDatabase.instance.ref()
@@ -123,7 +124,7 @@ class AssistantMethods
 
         //count total number trips and share it with Provider
         int overAllTripsCounter = keysTripsId.length;
-        Provider.of<AppInfo>(context, listen: false).updateOverAllTripsCounter(overAllTripsCounter);
+        Provider.of<AppInfoc>(context, listen: false).updateOverAllTripsCounter(overAllTripsCounter);
 
         //share trips keys with Provider
         List<String> tripsKeysList = [];
@@ -131,7 +132,7 @@ class AssistantMethods
         {
           tripsKeysList.add(key);
         });
-        Provider.of<AppInfo>(context, listen: false).updateOverAllTripsKeys(tripsKeysList);
+        Provider.of<AppInfoc>(context, listen: false).updateOverAllTripsKeys(tripsKeysList);
 
         //get trips keys data - read trips complete information
         readTripsHistoryInformation(context);
@@ -142,7 +143,7 @@ class AssistantMethods
 
   static void readTripsHistoryInformation(context)
   {
-    var tripsAllKeys = Provider.of<AppInfo>(context, listen: false).historyTripsKeysList;
+    var tripsAllKeys = Provider.of<AppInfoc>(context, listen: false).historyTripsKeysList;
 
     for(String eachKey in tripsAllKeys)
     {
@@ -157,7 +158,7 @@ class AssistantMethods
         if((snap.snapshot.value as Map)["status"] == "ended")
         {
           //update-add each history to OverAllTrips History Data List
-          Provider.of<AppInfo>(context, listen: false).updateOverAllTripsHistoryInformation(eachTripHistory);
+          Provider.of<AppInfoc>(context, listen: false).updateOverAllTripsHistoryInformation(eachTripHistory);
         }
       });
     }
@@ -176,7 +177,7 @@ class AssistantMethods
       if(snap.snapshot.value != null)
       {
         String driverEarnings = snap.snapshot.value.toString();
-        Provider.of<AppInfo>(context, listen: false).updateDriverTotalEarnings(driverEarnings);
+        Provider.of<AppInfoc>(context, listen: false).updateDriverTotalEarnings(driverEarnings);
       }
     });
 
@@ -196,10 +197,72 @@ class AssistantMethods
       if(snap.snapshot.value != null)
       {
         String driverRatings = snap.snapshot.value.toString();
-        Provider.of<AppInfo>(context, listen: false).updateDriverAverageRatings(driverRatings);
+        Provider.of<AppInfoc>(context, listen: false).updateDriverAverageRatings(driverRatings);
       }
     });
 
     readTripsKeysForOnlineDriver(context);
   }
+
+
+
+  //retrieve the all Scheduled ride KEYS
+  static void readScheduledRideKeys(context)
+  {
+    FirebaseDatabase.instance.ref()
+        .child("Scheduled Rides")
+        .once()
+        .then((snap)
+        //.orderByChild("userName")
+        //.equalTo(userModelCurrentInfo!.name)
+
+    {
+      if(snap.snapshot.value != null)
+      {
+        Map keysScheduledRideId = snap.snapshot.value as Map;
+
+        //count total number scheduled rides and share it with Provider
+        int overAllScheduledRideCounter = keysScheduledRideId.length;
+        Provider.of<AppInfoc>(context, listen: false).updateOverAllScheduledRideCounter(overAllScheduledRideCounter);
+
+        //share trips keys with Provider
+        List<String> scheduledRideKeysList = [];
+        keysScheduledRideId.forEach((key, value)
+        {
+          scheduledRideKeysList.add(key);
+        });
+        Provider.of<AppInfoc>(context, listen: false).updateOverAllScheduledRideKeys(scheduledRideKeysList);
+
+        //get Scheduled rides data - read scheduled complete information
+        readScheduledRidesInformation(context);
+      }
+    });
+  }
+
+  static void readScheduledRidesInformation(context)
+  {
+    var ScheduledRidesAllKeys = Provider.of<AppInfoc>(context, listen: false).historyScheduledRideKeysList;
+
+    for(String eachKey in ScheduledRidesAllKeys)
+    {
+      FirebaseDatabase.instance.ref()
+          .child("Scheduled Rides")
+          .child(eachKey)
+          .once()
+          .then((snap)
+      {
+        var eachScheduledRideHistory = ScheduledRideModel.fromSnapshot(snap.snapshot);
+
+        Provider.of<AppInfoc>(context, listen: false).updateOverAllScheduledRideHistoryInformation(eachScheduledRideHistory);
+        // if((snap.snapshot.value as Map)["status"] == "ended")
+        // {
+        //   //update-add each history to OverAllScheduledRide History Data List
+        //   Provider.of<AppInfoc>(context, listen: false).updateOverAllScheduledRideHistoryInformation(eachScheduledRideHistory);
+        // }
+      });
+    }
+  }
+
+
+
 }

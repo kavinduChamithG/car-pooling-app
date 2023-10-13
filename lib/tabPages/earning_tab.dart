@@ -43,7 +43,7 @@ class _EarningsTabPageState extends State<EarningsTabPage> {
                   const SizedBox(height: 10,),
 
                   Text(
-                    "Rs " + Provider.of<AppInfo>(context, listen: false).driverTotalEarnings,
+                    "Rs " + Provider.of<AppInfoc>(context, listen: false).driverTotalEarnings,
                     style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 60,
@@ -89,7 +89,7 @@ class _EarningsTabPageState extends State<EarningsTabPage> {
                   Expanded(
                     child: Container(
                       child: Text(
-                        Provider.of<AppInfo>(context, listen: false).allTripsHistoryInformationList.length.toString(),
+                        Provider.of<AppInfoc>(context, listen: false).allTripsHistoryInformationList.length.toString(),
                         textAlign: TextAlign.end,
                         style: const TextStyle(
                           fontSize: 20,

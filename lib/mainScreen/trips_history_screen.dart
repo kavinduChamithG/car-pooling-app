@@ -46,11 +46,11 @@ class _TripsHistoryScreenState extends State<TripsHistoryScreen>
           return Card(
             color: Colors.white54,
             child: HistoryDesignUIWidget(
-              tripsHistoryModel: Provider.of<AppInfo>(context, listen: false).allTripsHistoryInformationList[i],
+              tripsHistoryModel: Provider.of<AppInfoc>(context, listen: false).allTripsHistoryInformationList[i],
             ),
           );
         },
-        itemCount: Provider.of<AppInfo>(context, listen: false).allTripsHistoryInformationList.length,
+        itemCount: Provider.of<AppInfoc>(context, listen: false).allTripsHistoryInformationList.length,
         physics: const ClampingScrollPhysics(),
         shrinkWrap: true,
       ),

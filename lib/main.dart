@@ -1,21 +1,39 @@
 //import 'dart:js';
 
+//import 'dart:js';
+
+import 'package:carpooling_app/blocs/payment/payment_bloc.dart';
+import 'package:carpooling_app/global/stripe_key.dart';
 import 'package:carpooling_app/infoHandler/app_info.dart';
 import 'package:carpooling_app/splashScreen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 
 void main() async
 {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = stripePublishableKey;
+  await Stripe.instance.applySettings();
   await Firebase.initializeApp();
 
+  // runApp(MyApp(
+  //     child: MaterialApp(
+  //               title: 'Flutter Demo',
+  //               theme: ThemeData(
+  //                 primarySwatch: Colors.blue,
+  //               ),
+  //               home: const MySplashScreen(),
+  //               debugShowCheckedModeBanner: false,
+  //             ),
+  // ));
   runApp(
     MyApp(
       child: ChangeNotifierProvider(
-        create: (context) => AppInfo(),
-        child: MaterialApp(
+        create: (context) => AppInfoc(),
+          child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.blue,
@@ -23,8 +41,9 @@ void main() async
           home: const MySplashScreen(),
           debugShowCheckedModeBanner: false,
         ),
+        )
+        
       )
-    ),
   );
 }
 
@@ -55,10 +74,17 @@ class _MyAppState extends State<MyApp>
 
   @override
   Widget build(BuildContext context) {
-    return KeyedSubtree(
-      key: key,
-      child: widget.child!,
+    return BlocProvider(
+        create: (context) => PaymentBloc(),
+        child: KeyedSubtree(
+          key: key,
+          child: widget.child!,
+        )
     );
+    // return KeyedSubtree(
+    //   key: key,
+    //   child: widget.child!,
+    //);
   }
 }
 

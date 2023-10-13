@@ -10,6 +10,8 @@ import 'package:carpooling_app/tabPages/profile_tab.dart';
 
 import '../authentication/car_info_screen.dart';
 import '../global/global.dart';
+import '../mainScreen/new_trip_screen.dart';
+import '../widgets/fare_amount_collection_dialog.dart';
 
 class MySplashScreen extends StatefulWidget
 {
@@ -29,6 +31,7 @@ class _MySplashScreenState extends State<MySplashScreen>
 
         currentFirebaseUser = fAuth.currentUser;
         Navigator.push(context, MaterialPageRoute(builder: (c) => MainScreen()));  //MainScreen()
+        //Navigator.push(context, MaterialPageRoute(builder: (c) => NewTripScreen()));
 
       }
       else {

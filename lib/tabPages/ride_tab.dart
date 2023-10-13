@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../assistants/assistant_methods.dart';
 import '../authentication/car_info_screen.dart';
 import '../global/global.dart';
 import '../widgets/progress_dialog.dart';
@@ -93,18 +94,19 @@ class _RideTabPageState extends State<RideTabPage> {
     Map scheduledRideDetailMap =
     {
       "id": currentFirebaseUser!.uid,
-      "start location": startPositionTextEditingController.text.trim(),
-      "end location": endPositionTextEditingController.text.trim(),
+      "name": onlineDriverData!.name,
+      "start_location": startPositionTextEditingController.text.trim(),
+      "end_location": endPositionTextEditingController.text.trim(),
       "date": dateTextEditingController.text.trim(),
       "time": timeTextEditingController.text.trim(),
-      "seats available" : seatTextEditingController.text.trim(),
+      "seats_available" : seatTextEditingController.text.trim(),
     };
 
     //DatabaseReference driversRef = FirebaseDatabase.instance.ref().child("drivers");
     referenceScheduleRideRequest!.set(scheduledRideDetailMap);
 
     Fluttertoast.showToast(msg: "Scheduled Ride has been Posted");
-    Navigator.push(context, MaterialPageRoute(builder: (c)=> ScheduledRides()));
+    Navigator.push(context, MaterialPageRoute(builder: (c)=> scheduledRidesScreen()));
 
   }
 
@@ -122,17 +124,20 @@ class _RideTabPageState extends State<RideTabPage> {
 
                     Row(
                       children: [
-                        SizedBox(width: 50),
+
+                        SizedBox(width: 25),
+
                         Container(
                             width:300,
-                            margin: const EdgeInsets.only(top: 20),
+                            margin: const EdgeInsets.only(top: 25),
                             child: ElevatedButton(
                               child: const Text(
-                                "Show Schedule Rides",
+                                "Show Scheduled Rides",
                               ),
                               onPressed: ()
                               {
-                                saveScheduleRideInfo();
+
+                                Navigator.push(context, MaterialPageRoute(builder: (c)=> scheduledRidesScreen()));
 
                               },
                               style: ElevatedButton.styleFrom(
@@ -294,6 +299,7 @@ class _RideTabPageState extends State<RideTabPage> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 10),
                     //from
                     // Row(
                     //   children: [
@@ -419,7 +425,8 @@ class _RideTabPageState extends State<RideTabPage> {
                     children: [
                       SizedBox(width: 10),
                       Container(
-                        width:150,
+                        width:130,
+                        height:45,
                         child: ElevatedButton(
                           child: const Text(
                             "Post Ride",
@@ -441,15 +448,21 @@ class _RideTabPageState extends State<RideTabPage> {
 
                       ),
 
-  SizedBox(width: 40), // Add some spacing between the buttons
+  SizedBox(width: 30), // Add some spacing between the buttons
     Container(
-      width: 150,
+      width: 130,
+      height:45,
       child: ElevatedButton(
         child: const Text(
           "Reset",
         ),
         onPressed: () {
           // Handle reset button onPressed event
+          startPositionTextEditingController.clear();
+          endPositionTextEditingController.clear();
+          dateTextEditingController.clear();
+          timeTextEditingController.clear();
+          seatTextEditingController.clear();
         },
         style: ElevatedButton.styleFrom(
           primary: Color.fromARGB(255, 255, 255, 255),

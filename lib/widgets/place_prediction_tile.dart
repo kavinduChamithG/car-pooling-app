@@ -48,8 +48,8 @@ class _PlacePredictionTileDesignState extends State<PlacePredictionTileDesign> {
       directions.locationLatitude = responseApi["result"]["geometry"]["location"]["lat"];
       directions.locationLongitude = responseApi["result"]["geometry"]["location"]["lng"];
 
-      Provider.of<AppInfo>(context, listen: false).updateDriverDestinationAddress(directions);
-      Provider.of<AppInfo>(context, listen: false).updateDropOffLocationAddress(directions);
+      Provider.of<AppInfoc>(context, listen: false).updateDriverDestinationAddress(directions);
+      Provider.of<AppInfoc>(context, listen: false).updateDropOffLocationAddress(directions);
 
       setState(() {
         DriverDestinationLocation = directions.locationName!;

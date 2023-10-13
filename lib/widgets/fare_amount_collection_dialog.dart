@@ -71,7 +71,7 @@ class _FareAmountCollectionDialogState extends State<FareAmountCollectionDialog>
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                "This is the total trip amount, Please it Collect from user.",
+                "This is the total trip amount, Please collect it from user.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.grey,

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
 
 import '../infoHandler/app_info.dart';
+import '../payment/card_form_screen.dart';
 import '../widgets/info_design_ui.dart';
 import 'package:carpooling_app/tabPages/ratings_tab.dart';
 
@@ -94,7 +95,7 @@ class _ProfileTabPageState extends State<ProfileTabPage>
 
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.yellowAccent,
+                primary: Colors.blueAccent,
               ),
               child: const Text(
                 "View your Ratings",
@@ -116,6 +117,20 @@ class _ProfileTabPageState extends State<ProfileTabPage>
               ),
               child: const Text(
                 "Logout",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+
+            ElevatedButton(
+              onPressed: ()
+              {
+                Navigator.push(context, MaterialPageRoute(builder: (c) => CardFormScreen()));
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.greenAccent,
+              ),
+              child: const Text(
+                "Pay by Credit Card",
                 style: TextStyle(color: Colors.white),
               ),
             )
